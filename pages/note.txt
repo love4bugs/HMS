@@ -1,0 +1,11 @@
+package = models.CharField(max_length=1, choices=PACKAGE_CHOICES, default=NO_PACKAGE)
+ NO_PACKAGE = 'N'
+    SILVER = 'S'
+    GOLD = 'G'
+    PREMIUM = 'P'
+    PACKAGE_CHOICES = [
+        (NO_PACKAGE, 'No Package'),
+        (SILVER, 'Sliver'),
+        (GOLD, 'Gold'),
+        (PREMIUM, 'Premium')
+    ]

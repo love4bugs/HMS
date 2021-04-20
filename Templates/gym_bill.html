@@ -1,0 +1,15 @@
+{% extends 'resturant_bill.html' %}
+
+{% block title %}Gym Billing{% endblock %}
+
+{% block table %}
+  <form method = 'POST' id='form-id'> {% csrf_token %}
+      <tr>
+          <th>Cost Per Hour:</th>
+          <th>{{obj.cost_per_hour}}</th>
+      </tr>
+      <tr>
+        <th>Time Spent Per Hour:</th>
+        <th><input type="number" id="time-spent" name="time-spent"></th>
+      </tr>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Billing{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    {% for message in messages %}
+    <p id="messages">{{ message }}</p>
+    {% endfor %}
+  <nav class="nav nav-pills flex-column flex-sm-row">
+    <h5>Available Rooms:</h5>
+    {% for instance in qs %}
+    <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="../room/{{instance.room_no}}">Room No: {{instance.room_no}}<br>AC: {{instance.AC}}<br>Floor: {{instance.floor}}</a>
+    {% endfor %}
+  </nav>
+  <nav class="nav nav-pills flex-column flex-sm-row">
+    <h5>Booking Form:</h5>
+  <form method = 'POST' id='form-id'> {% csrf_token %}
+    {{form.as_p}}
+    <input type = 'submit' value='Book Room'/>
+  </form>
+</nav>
+  <p><a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="{% url 'logout' %}">Log Out</a></p>
+{% else %}
+  <p>You are not logged in</p>
+  <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}

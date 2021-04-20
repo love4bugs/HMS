@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Resturant Billing{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+  {% for message in messages %}
+  <p id="messages">{{ message }}</p>
+  {% endfor %}
+<table>
+  {% block table %}
+    <th for="Item_Id">Id </th>
+    <th for="Item_Name"> Name </th>
+    <th for="Item_cost"> cost </th>
+    <th for="Item_cost"> Quantity </th>
+  <form method = 'POST' id='form-id'> {% csrf_token %}
+      {% for instance in qs %}
+      <tr>
+        <th>{{instance.item_id}}</th>
+        <th>{{instance.item_name}}</th>
+        <th>{{instance.item_cost}}</th>
+        <th><input type="number" id="qunat" name="{{instance.item_id}}"></th>
+      </tr>
+    {% endfor %}
+    {% endblock %}
+    <tr>
+      <th>Room No</th>
+      <th>(If staying</th>
+      <th>in Hotel)</th>
+      <th><input type="number" id="roomNo" name="room_no"></th>
+    </tr>
+</table>
+    <input type = 'submit' value='Generate Bill'/>
+  </form>
+
+  <p><a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="{% url 'logout' %}">Log Out</a></p>
+{% else %}
+  <p>You are not logged in</p>
+  <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}

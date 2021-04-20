@@ -1,0 +1,8 @@
+{% extends 'receipt.html' %}
+
+{% block items %}
+{% block heading %}<h1 class="text-center">Gym Receipt</h1><br><br>{% endblock %}
+<p class="text-center">Time spent in Hours = <bold>{{ time_spent }}</bold></p>
+<p class="text-center">Cost Per Hour = <bold>{{ cost }}</bold></p>
+<h5 class="text-center">Total Cost = {{ time_spent }} * {{ cost }} = {{ total }}</h5>
+{% endblock %}

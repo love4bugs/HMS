@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Bill</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+    {% if user.is_authenticated %}
+    {% block items %}
+    <h1 class="text-center">Final Bill</h1><br><br>
+    <h4 class="text-center">Customer Info</h4>
+    <p class="text-center"><bold>Name: </bold>{{ Name }}</p>
+    <p class="text-center"><bold>Phone Number: </bold>{{ Phone }}</p>
+    <p class="text-center"><bold>Check-In Time: </bold>{{ Checkin }}</p>
+    <p class="text-center"><bold>Check-Out Time: </bold>{{ Checkout }}</p>
+    <p class="text-center"><bold>Room: </bold>{{ RoomNo }}</p>
+    <p class="text-center"><bold>Package: </bold>{{ Package }}</p>
+    <p class="text-center"><bold>--------------------------------------------------</bold></p>
+    <h4 class="text-center">Room Bill</h4>
+    <p class="text-center"><bold>Room Cost Per Day: </bold>{{ RoomCost }}</p>
+    <p class="text-center"><bold>Duration: </bold>{{ Duration }} days</p>
+    <p class="text-center"><bold>Advance Paid: </bold>{{ Advance }}</p>
+    <p class="text-center"><bold>Total Room Cost: {{ Duration }} * {{ RoomCost }} - {{ Advance }} = </bold>{{ Total_Room_Cost }}</p>
+    <p class="text-center"><bold>--------------------------------------------------</bold></p>
+    <h4 class="text-center">Package Info</h4>
+    <p class="text-center"><bold>Package Selected: </bold>{{ Package }}</p>
+    <p class="text-center"><bold>Package Cost: </bold>{{ PackageCost }}</p>
+    <p class="text-center"><bold>--------------------------------------------------</bold></p>
+    <h4 class="text-center">Resturant Bill</h4>
+    {% for instance in Resturant %}
+    {% for obj in instance %}
+    {% if forloop.first %}
+        <p class="text-left">At {{obj}}</p>
+    {% endif %}
+    {% if not forloop.first %}
+        <p class="text-center">{{obj.item.item_name}} * {{obj.qunatity}} = {% widthratio obj.item.item_cost 1 obj.qunatity %}</p>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    <p class="text-center"><bold>Total Resturant Cost: </bold>{{ Total_Resturant_Cost }}</p>
+    <p class="text-center"><bold>--------------------------------------------------</bold></p>
+    <h4 class="text-center">Gym Bill</h4>
+    {% for instance in Gym %}
+    {% for obj in instance %}
+    {% if forloop.first %}
+        <p class="text-left">At {{obj}}</p>
+    {% endif %}
+    {% if not forloop.first %}
+        <p class="text-center"><bold>Time spent in gym: </bold>{{ obj.time_spent_in_hours }} hrs</p>
+        <p class="text-center">{{obj.gym.cost_per_hour}} * {{obj.time_spent_in_hours}} = {% widthratio obj.gym.cost_per_hour 1 obj.time_spent_in_hours %}</p>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    <p class="text-center"><bold>Total Gym Cost: </bold>{{ Total_Gym_Cost }}</p>
+    <p class="text-center"><bold>--------------------------------------------------</bold></p>
+    <h4 class="text-center">Pool Bill</h4>
+    {% for instance in Pool %}
+    {% for obj in instance %}
+    {% if forloop.first %}
+        <p class="text-left">At {{obj}}</p>
+    {% endif %}
+    {% if not forloop.first %}
+        <p class="text-center"><bold>Time spent in pool: </bold>{{ obj.time_spent_in_hours }} hrs</p>
+        <p class="text-center">{{obj.pool.cost_per_hour}} * {{obj.time_spent_in_hours}} = {% widthratio obj.pool.cost_per_hour 1 obj.time_spent_in_hours %}</p>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+    <p class="text-center"><bold>Total pool Cost: </bold>{{ Total_Pool_Cost }}</p>
+    <p class="text-center"><bold>--------------------------------------------------</bold></p>
+
+    <h5 class="text-center">Total Cost = {{ total }}</h5>
+    <h5 class="text-center">Tax = {{ tax }}</h5>
+    <h4 class="text-center">Total Amt. payable = {{ payable }}</h4>
+    {% endblock %}
+    {% endif %}
+</body>
+</html>

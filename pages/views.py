@@ -61,19 +61,14 @@ def book_view(request, *args, **kwargs):
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
-            try:
-                obj = Room.objects.get(room_no = form.cleaned_data['room_no'])
-                if obj.empty == False:
-                    messages.info(request, 'Room is already booked!, Select one of the avaliable Rooms')
-                else:
-                    Room.objects.filter(pk = obj.pk).update(empty = False)
-                    form.save()
-                    return redirect('/home')
-            except Exception:
-                messages.info(request, 'Invalid Room Number!')
+            Room.objects.filter(room_no = form.cleaned_data['room_no']).update(empty = False)
+            form.save()
+            return redirect('/home')
         else:
-            print(form.errors)
-
+            content =  {
+                "form": form,
+                "qs": queryset
+            }
     return render(request, 'booking.html', content)
 
 def bill_view(request):
@@ -86,21 +81,16 @@ def bill_view(request):
 
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
-        try:
-            if form.is_valid():
-                obj = Room.objects.get(room_no = form.cleaned_data['room_no'])
-                if obj.empty == True:
-                    messages.info(request, 'Room is not occupied!, Select one of the Occupied Rooms')
-                else:
-                    instance = form.save()
-                    Checkout.objects.filter(pk=instance.pk).update(
-                            	                consumer = Costumer.objects.filter(room_no = obj.room_no, phone = instance.phone, active = True)[0])
-                    
-                    return redirect(str(int(form.cleaned_data['phone']))+'/')
-            else:
-                print(form.errors)
-        except Exception:
-            messages.info(request, 'Invalid Room! or Phone Number!')
+        if form.is_valid():
+            instance = form.save()
+            Checkout.objects.filter(pk=instance.pk).update(
+                                        consumer = Costumer.objects.filter(room_no = instance.room_no, phone = instance.phone, active = True)[0])
+            return redirect(str(int(form.cleaned_data['phone']))+'/')
+        else:
+            content =  {
+                "form": form,
+                "qs": queryset
+            }
         
     return render(request, 'billing.html', content)
 
@@ -271,6 +261,7 @@ def checkout_bill(request, my_phone,*args, **kwargs):
         prev = query_set[0].order_id
         order = [datetime.fromtimestamp(prev)]
     except Exception:
+        order = []
         pass
     for instance in query_set:
         if instance.order_id != prev:
@@ -345,11 +336,49 @@ def checkout_bill(request, my_phone,*args, **kwargs):
                 'tax': total*0.2,
                 'payable': total+total*0.2
             }
-    print(resturant_obj)
+            
     Checkout.objects.filter(phone=my_phone).update(paid = True)
     Room.objects.filter(pk = obj2.pk).update(empty = True)
     RestaurantParchase.objects.filter(consumer = obj1).update(paid = True)
     GymUsage.objects.filter(consumer = obj1).update(paid = True)
     PoolUsage.objects.filter(consumer = obj1).update(paid = True)
     Costumer.objects.filter(pk = obj1.pk).update(active = False)
+
     return render(request, 'checkout.html', content)
+
+
+def list_resturant_bills(request, *args, **kwargs):
+    query_set = RestaurantParchase.objects.order_by('order_id')
+    order_set = []
+    total = 0
+
+    try:
+        prev = query_set[0].order_id
+        obj = query_set[0].consumer
+        if obj == None:
+            obj = 'NA'
+        order = [prev, obj]
+        total += query_set[0].item.item_cost * query_set[0].qunatity
+    except Exception:
+        pass
+
+    for index, instance in enumerate(query_set):
+        if instance.order_id != prev:
+            order.append(total)
+            order_set.append(order)
+            total = 0
+            prev = instance.order_id
+            obj = instance.consumer
+            if obj == None:
+                obj = 'NA'
+            order = [prev, obj]
+        if index != 0:
+            total += instance.item.item_cost * instance.qunatity
+    order.append(total)
+    order_set.append(order)
+    
+    content = {
+        'qs': order_set
+    }
+
+    return render(request, 'resturant_bills.html', content)

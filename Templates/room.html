@@ -3,7 +3,6 @@
 {% block title %}Billing{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
 <div class='nav'>
     <p><b>Room No: </b>{{instance.room_no}}</p>
     <p><b>Empty: </b>{{instance.empty}}</p>
@@ -11,5 +10,4 @@
     <p><b>Floor: </b>{{instance.floor}}</p>
     <p><b>Type: </b>{{instance.room_type}}</p>
 </div>
-{% endif %}
 {% endblock %}

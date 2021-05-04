@@ -3,13 +3,14 @@
 {% block title %}Booking{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-<form method = 'POST'> {% csrf_token %}
-    {{form.as_p}}
-    <input type = 'submit' value='save'/>
+<nav class="nav nav-pills flex-column flex-sm-row">
+          
+  <form method = 'POST' id='form-id' class='nav-link'> {% csrf_token %}
+    <table>
+      <h5 class='text-sm-center'>Creating a Room:</h5>
+      {{ form }}
+    </table>
+  <p class="text-sm-center"><input type = 'submit' value='Add Room'/></p>
 </form>
-{% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a>
-{% endif %}
+</nav>
 {% endblock %}

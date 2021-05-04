@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Resturant Bills{% endblock %}
+
+{% block content %}
+<nav class="nav nav-pills flex-column flex-sm-row">
+    <div class="container">
+    <h1 class="text-center">Resturant Bills</h1>
+<table class="table table-fluid table-striped table-bordered table-m" style='border: 4px solid black;' id='myTable'>
+    <thead>
+    <tr>
+        <th class="th-sm" style="padding-right:10px">Order Id</th>
+        <th class="th-sm" style="padding-right:10px">Customer Name</th>
+        <th class="th-sm" style="padding-right:10px">Customer Phone No.</th>
+        <th class="th-sm" style="padding-right:10px">Room No.</th>
+        <th class="th-sm" style="padding-right:10px">Total Cost</th>
+    </tr>
+    </thead>
+    <tbody>
+{% for order in qs %}
+<tr>
+    {% for instance in order %}
+    {% if forloop.first %}
+        <th><a href='../{{instance}}'>{{instance}}</a></th>
+    {% elif forloop.last %}
+        <th>{{instance}}</th>
+    {% elif instance == 'NA' %}
+        <th>{{instance}}</th>
+        <th>{{instance}}</th>
+        <th>{{instance}}</th>
+    {% else %}
+        <th>{{instance.name}}</th>
+        <th>{{instance.phone}}</th>
+        <th>{{instance.room_no}}</th>
+    {% endif %}
+
+    {% endfor %}
+</tr>
+{% endfor %}
+<tbody>
+</table>
+</div>
+
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+    </script>
+
+</nav>
+
+{% endblock %}

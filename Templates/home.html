@@ -3,7 +3,6 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
   <p>Hi {{ user.username }}!</p>
   <p>Packages Available:</p>
   <ul>
@@ -11,9 +10,4 @@
     <li>Glod - ₹2000 - 24hrs House Keeping + free Food from resturant</li>
     <li>Premium - ₹5000 - 24hrs House Keeping + free Food from resturant + Gym and Pool usage</li>
   </ul>
-  <p><a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="{% url 'logout' %}">Log Out</a></p>
-{% else %}
-  <p>You are not logged in</p>
-  <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="{% url 'login' %}">Log In</a>
-{% endif %}
 {% endblock %}

@@ -3,26 +3,34 @@
 {% block title %}Billing{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
   {% for message in messages %}
   <p id="messages">{{ message }}</p>
   {% endfor %}
-  <nav class="nav nav-pills flex-column flex-sm-row">
-    <h5>Occupied Rooms</h5>
-    {% for instance in qs %}
-    <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="../room/{{instance.room_no}}">Room No: {{instance.room_no}}<br>AC: {{instance.AC}}<br>Floor: {{instance.floor}}</a>
-    {% endfor %}
-  </nav>
-
-  <nav class="nav nav-pills flex-column flex-sm-row">
-  <form method = 'POST' id='form-id'> {% csrf_token %}
-    {{form.as_p}}
-    <input type = 'submit' value='Generate Bill'/>
-  </form>
-</nav>
-<p><a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="{% url 'logout' %}">Log Out</a></p>
-{% else %}
-  <p>You are not logged in</p>
-  <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="{% url 'login' %}">Log In</a>
-{% endif %}
+    
+    <div class="container-fluid">
+      <div class="row flex-xl-nowrap">
+        <div class="col-12 col-md-3 col-xl-2 bd-sidebar">
+          <h5>Occupied Rooms</h5>
+          <div class="d-flex justify-content-center mt-3 login_container">
+            {% for instance in qs %}
+              <p><a class="btn login_btn" href="../room/{{instance.room_no}}">{{instance.room_no}}</a></p>
+              {% ifequal forloop.counter|divisibleby:"3" True %}   
+          </div><div class="d-flex justify-content-center mt-3 login_container">
+              {% endifequal %}
+            {% endfor %}
+            </div>
+        </div>
+        <nav class="nav nav-pills flex-column flex-sm-row">
+          
+          <form method = 'POST' id='form-id' class='nav-link'> {% csrf_token %}
+            <table>
+              <h5 class='text-sm-center'>Checking Out Form:</h5>
+              {{ form }}
+            </table>
+            <br>
+            <p class="text-sm-center"><input type = 'submit' value='Check-Out'/></p>
+        </form>
+      </nav>
+      </div>
+    </div>
 {% endblock %}

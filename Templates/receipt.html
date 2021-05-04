@@ -4,18 +4,27 @@
 <head>
 	<title>Receipt</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        .center {
+                margin-left: auto;
+                margin-right: auto;
+                }
+    </style>
 </head>
 <body>
     {% if user.is_authenticated %}
+    <table class="center">
     {% block items %}
-    <h1 class="text-center">Receipt</h1><br><br>
+    <h1 class="text-center">Resturant Receipt</h1><br/>
     {% for obj in bill %}
-        <p class="text-sm-center">{{ obj.name }} X {{ obj.qunatity }} = <bold>{{ obj.cost }}</bold></p>
+        <tr><th class='text-left' style="padding-right:10px">{{ obj.name }} * {{ obj.qunatity }}: </th><th class='text-right'>₹ {{ obj.cost }}</th></tr>
     {% endfor %}
-    <h5 class="text-center">Total Cost = {{ total }}</h5>
+    <tr><th><br/></th></tr>
+    <tr><th class='text-left' style="padding-right:10px"><h5 >Total Cost: </h5></th><th class='text-right'><h5> ₹ {{ total }}</h5></th></tr>
     {% endblock %}
-    <h5 class="text-center">Tax = {{ tax }}</h5>
-    <h4 class="text-center">Total Amt. payable = {{ payable }}</h4>
+    <tr><th class='text-left' style="padding-right:10px"><h5 >Tax: </h5></th><th class='text-right'><h5> ₹ {{ tax }}</h5></th></tr>
+    <tr><th class='text-left' style="padding-right:10px"><h5 >Total Amt. payable: </h5></th><th class='text-right'><h5>₹ {{ payable }}</h5></th></tr>
     {% endif %}
+</table>
 </body>
 </html>

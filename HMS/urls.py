@@ -29,9 +29,10 @@ urlpatterns = [
     path('room/<str:my_pk>', room_detail, name='room-detail'),
     path('resturant/', resturant_bill, name='resturant'),
     path('resturant/<int:my_order>/', resturant_reciept, name='resturant-reciept'),
+    path('resturant/Bills/', list_resturant_bills, name='resturant-bills'),
     path('Gym/', gym_bill, name='gym'),
     path('Gym/<int:my_usage_id>/', gym_reciept, name='gym-reciept'),
     path('Pool/', pool_bill, name='pool'),
     path('Pool/<int:my_usage_id>/', pool_reciept, name='pool-reciept'),
-    path('billing/<int:my_phone>/', checkout_bill, name='bill-final'),
+    path('billing/<int:timestamp>/', checkout_bill, name='bill-final'),
 ]

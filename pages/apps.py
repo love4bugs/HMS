@@ -1,5 +1,10 @@
+"""Apps
+"""
+
 from django.apps import AppConfig
 
 
 class PagesConfig(AppConfig):
-    name = 'pages'
+    """App config for Pages"""
+
+    name = "pages"

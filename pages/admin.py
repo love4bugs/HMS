@@ -1,5 +1,19 @@
+"""Admin
+"""
+
 from django.contrib import admin
-from .models import *
+
+from pages.models import (
+    Checkout,
+    Costumer,
+    Gym,
+    GymUsage,
+    Item,
+    Pool,
+    PoolUsage,
+    RestaurantParchase,
+    Room,
+)
 
 admin.site.register(Room)
 admin.site.register(Checkout)
